@@ -1,19 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour
 {
-    #region Player Components
-    Rigidbody2D rb;
-    Animator anim;
-    CapsuleCollider2D capsCollider;
-    Sprite ladderStopSprite;
-    #endregion
+    // Player Components
+    private Rigidbody2D rb;
+    private Animator anim;
+    private CapsuleCollider2D capsCollider;
+    private SpriteRenderer spriteRenderer;
+    public Sprite sprite;
 
-    #region Player Variables
+    // Player Variables
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float jumpPower = 10f;
     [SerializeField] float climbSpeed = 5f;
@@ -21,21 +20,17 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float horizontal;
     [SerializeField] float vertical;
     [SerializeField] bool isTouchingLadder;
-    #endregion
 
-    #region Ground Check
+    // Ground Check
     [SerializeField] float groundCheckDistance = 0.5f;
     RaycastHit2D[] groundCheckHit = new RaycastHit2D[5];
     ContactFilter2D groundCheckFilter;
-    [SerializeField] bool groundCheck;
+    bool groundCheck;
     public bool isGrounded
     {
-        get
-        {
-            return groundCheck;
-        }
+        get { return groundCheck; }
         private set
-        { 
+        {
             groundCheck = value;
             if (!isTouchingLadder)
             {
@@ -43,20 +38,19 @@ public class Player_Controller : MonoBehaviour
             }
         }
     }
-    #endregion
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         capsCollider = GetComponent<CapsuleCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    #region Updates
     void Update()
     {
         GroundCheck();
-        FlipSrpite();
+        FlipSprite();
         LadderCheck();
     }
 
@@ -69,48 +63,46 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
-            rb.velocity = new Vector2(horizontal * 0.5f, vertical * climbSpeed);
+            rb.velocity = new Vector2(horizontal * 0.6f, vertical * climbSpeed);
             rb.gravityScale = 0f;
+
+            if (rb.velocity.magnitude < 0.1f)
+            {
+                anim.SetBool("isStopped", true);
+            }
+            else
+            {
+                anim.SetBool("isStopped", false);
+            }
         }
         anim.SetFloat("yVelocity", rb.velocity.normalized.y);
     }
-    #endregion
 
-    #region Input Actions
     public void OnJump(InputAction.CallbackContext context)
     {
-        
         if (isGrounded && context.performed)
         {
             anim.SetBool("isJumping", true);
-            //isGrounded = false;
-            rb.velocity = new Vector2(rb.velocity.y, jumpPower);
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
         else if (context.canceled && rb.velocity.y != 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
+
     public void OnMove(InputAction.CallbackContext context)
-    { 
+    {
         horizontal = context.ReadValue<Vector2>().x;
-        //Running Animation
-        if (horizontal != 0)
-        {
-            anim.SetBool("isMoving", true);
-        }
-        else
-        {
-            anim.SetBool("isMoving", false);
-        }
+        anim.SetBool("isMoving", Mathf.Abs(horizontal) > Mathf.Epsilon);
     }
+
     public void OnLadder(InputAction.CallbackContext context)
     {
         vertical = context.ReadValue<Vector2>().y;
     }
-    #endregion
 
-    void FlipSrpite()
+    void FlipSprite()
     {
         bool playerHasHorizontalSpeed = Mathf.Abs(horizontal) > Mathf.Epsilon;
         if (playerHasHorizontalSpeed)
@@ -118,19 +110,31 @@ public class Player_Controller : MonoBehaviour
             transform.localScale = new Vector2(Mathf.Sign(horizontal), 1f);
         }
     }
+
     void GroundCheck()
     {
         isGrounded = capsCollider.Cast(Vector2.down, groundCheckFilter, groundCheckHit, groundCheckDistance) > 0;
     }
+
     void LadderCheck()
     {
-        if (capsCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        if (vertical > 0)
         {
-            isTouchingLadder = true;
+            if (capsCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+            {
+                isTouchingLadder = true;
+                anim.SetBool("isClimbing", true);
+            }
+            else
+            {
+                isTouchingLadder = false;
+                anim.SetBool("isClimbing", false);
+            }
         }
-        else
+        else if (!capsCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
             isTouchingLadder = false;
+            anim.SetBool("isClimbing", false);
         }
     }
 }
