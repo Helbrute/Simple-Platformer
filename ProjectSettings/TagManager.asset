@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Mushroom
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,9 +14,9 @@ TagManager:
   - Water
   - UI
   - Ladder
-  - 
-  - 
-  - 
+  - Enemies
+  - Player
+  - Enemy Bounds
   - 
   - 
   - 
@@ -46,6 +48,9 @@ TagManager:
     locked: 0
   - name: Ladders
     uniqueID: 2583303393
+    locked: 0
+  - name: Enemy
+    uniqueID: 2180343267
     locked: 0
   - name: Player
     uniqueID: 2044798247

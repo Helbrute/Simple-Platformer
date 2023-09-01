@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: player_stopped_the_ladder
+  m_Name: idle_anim
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,17 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -1298294726, guid: 0fab3df525e91ab4bbb39bf4f4c645ce, type: 3}
+      value: {fileID: -981923863, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - time: 0.2
+      value: {fileID: 1463854018, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - time: 0.4
+      value: {fileID: -235992845, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - time: 0.5833333
+      value: {fileID: -555324764, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - time: 0.78333336
+      value: {fileID: -263369490, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - time: 0.98333335
+      value: {fileID: 721513153, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -44,13 +54,18 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -1298294726, guid: 0fab3df525e91ab4bbb39bf4f4c645ce, type: 3}
+    - {fileID: -981923863, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - {fileID: 1463854018, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - {fileID: -235992845, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - {fileID: -555324764, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - {fileID: -263369490, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
+    - {fileID: 721513153, guid: 76fc90f9be139064899aad9b83301b6a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

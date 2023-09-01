@@ -60,8 +60,7 @@ public class Player_Controller : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
             rb.gravityScale = baseGravity;
-        }
-        else
+        }else
         {
             rb.velocity = new Vector2(horizontal * 0.6f, vertical * climbSpeed);
             rb.gravityScale = 0f;
@@ -78,6 +77,7 @@ public class Player_Controller : MonoBehaviour
         anim.SetFloat("yVelocity", rb.velocity.normalized.y);
     }
 
+    //Player Controlls
     public void OnJump(InputAction.CallbackContext context)
     {
         if (isGrounded && context.performed)
@@ -90,18 +90,17 @@ public class Player_Controller : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
-
     public void OnMove(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
         anim.SetBool("isMoving", Mathf.Abs(horizontal) > Mathf.Epsilon);
     }
-
     public void OnLadder(InputAction.CallbackContext context)
     {
         vertical = context.ReadValue<Vector2>().y;
     }
 
+    //Phycics Methods
     void FlipSprite()
     {
         bool playerHasHorizontalSpeed = Mathf.Abs(horizontal) > Mathf.Epsilon;
@@ -110,12 +109,10 @@ public class Player_Controller : MonoBehaviour
             transform.localScale = new Vector2(Mathf.Sign(horizontal), 1f);
         }
     }
-
     void GroundCheck()
     {
         isGrounded = capsCollider.Cast(Vector2.down, groundCheckFilter, groundCheckHit, groundCheckDistance) > 0;
     }
-
     void LadderCheck()
     {
         if (vertical > 0)
