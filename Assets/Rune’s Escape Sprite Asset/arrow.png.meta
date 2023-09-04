@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 66bd09c26b4cf0b4abda2577b3421606
+guid: 42a03c6d81305b94587cdf50e1b0a3b9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -71,7 +71,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -124,27 +124,10 @@ TextureImporter:
     sprites: []
     outline: []
     physicsShape:
-    - - {x: -8, y: -8}
-      - {x: -8, y: 1}
-      - {x: -6, y: 1}
-      - {x: -6, y: 3}
-      - {x: -5, y: 3}
-      - {x: -5, y: 5}
-      - {x: -4, y: 5}
-      - {x: -4, y: 3}
-      - {x: -1, y: 3}
-      - {x: 1, y: 3}
-      - {x: 1, y: 4}
-      - {x: 2, y: 4}
-      - {x: 2, y: 7}
-      - {x: 3.00589, y: 6.999999}
-      - {x: 3, y: 5}
-      - {x: 4, y: 5}
-      - {x: 4, y: 3}
-      - {x: 7, y: 3}
-      - {x: 7, y: 1}
-      - {x: 8, y: 1}
-      - {x: 8, y: -8}
+    - - {x: -7, y: -1}
+      - {x: -7, y: 2}
+      - {x: 7, y: 2}
+      - {x: 7, y: -1}
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
     internalID: 1537655665

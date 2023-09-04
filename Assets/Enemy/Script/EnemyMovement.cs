@@ -29,7 +29,7 @@ public class EnemyMovement : MonoBehaviour
         bool hasHorizontalSpeed = Mathf.Abs(rb.velocity.x) > Mathf.Epsilon;
         anim.SetBool("isMoving", hasHorizontalSpeed);
     }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         moveSpeed = -moveSpeed;
         FlipSprite();

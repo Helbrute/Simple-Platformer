@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Mushroom
   - Enemy
+  - Hazards
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Enemies
   - Player
   - Enemy Bounds
-  - 
-  - 
+  - Hazards
+  - Arrows
   - 
   - 
   - 

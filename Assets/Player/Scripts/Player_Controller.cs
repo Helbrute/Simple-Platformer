@@ -9,8 +9,8 @@ public class Player_Controller : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private CapsuleCollider2D capsCollider;
-    private SpriteRenderer spriteRenderer;
-    public Sprite sprite;
+    public GameObject arrow;
+    public Transform arrowPosition;
 
     // Player Variables
     [SerializeField] float moveSpeed = 10f;
@@ -19,7 +19,11 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float baseGravity = 5f;
     [SerializeField] float horizontal;
     [SerializeField] float vertical;
+
+    // Checks
     [SerializeField] bool isTouchingLadder;
+    [SerializeField] bool isAlive = true;
+    //[SerializeField] bool isShooting = false;
 
     // Ground Check
     [SerializeField] float groundCheckDistance = 0.5f;
@@ -41,21 +45,20 @@ public class Player_Controller : MonoBehaviour
 
     void Start()
     {
+        isAlive = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         capsCollider = GetComponent<CapsuleCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
+        anim.SetFloat("yVelocity", rb.velocity.normalized.y);
         GroundCheck();
         FlipSprite();
         LadderCheck();
-    }
 
-    private void FixedUpdate()
-    {
+        if (!isAlive) { return; }
         if (!isTouchingLadder)
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
@@ -74,12 +77,12 @@ public class Player_Controller : MonoBehaviour
                 anim.SetBool("isStopped", false);
             }
         }
-        anim.SetFloat("yVelocity", rb.velocity.normalized.y);
     }
 
     //Player Controlls
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (!isAlive) { return; }
         if (isGrounded && context.performed)
         {
             anim.SetBool("isJumping", true);
@@ -92,15 +95,31 @@ public class Player_Controller : MonoBehaviour
     }
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (!isAlive) { return; }
         horizontal = context.ReadValue<Vector2>().x;
         anim.SetBool("isMoving", Mathf.Abs(horizontal) > Mathf.Epsilon);
     }
     public void OnLadder(InputAction.CallbackContext context)
     {
+        if (!isAlive) { return; }
         vertical = context.ReadValue<Vector2>().y;
+    }
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (!isAlive) { return; }
+        Instantiate(arrow, arrowPosition.position, transform.rotation);
     }
 
     //Phycics Methods
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy") || other.CompareTag("Hazards"))
+        {
+            isAlive = false;
+            StartCoroutine(deathRoutine());
+            Debug.Log("Enemy detected!");
+        }
+    }
     void FlipSprite()
     {
         bool playerHasHorizontalSpeed = Mathf.Abs(horizontal) > Mathf.Epsilon;
@@ -134,4 +153,18 @@ public class Player_Controller : MonoBehaviour
             anim.SetBool("isClimbing", false);
         }
     }
+
+    // Player Coroutines
+    IEnumerator deathRoutine()
+    {
+        anim.SetTrigger("isDead");
+        yield return new WaitForSeconds(1.5f);
+        Destroy(gameObject);
+    }
+    //IEnumerator shooting()
+    //{
+    //    anim.SetBool("isShooting", true);
+    //    yield return new WaitForSeconds(0.4f);
+    //    anim.SetBool("isShooting", false);
+    //}
 }
