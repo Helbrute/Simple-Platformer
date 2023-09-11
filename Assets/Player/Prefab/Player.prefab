@@ -133,7 +133,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 15
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 5
@@ -317,6 +317,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9a33c53b-c88e-444a-8ab5-447719a41edb
     m_ActionName: Player/VerticalMovement[/Keyboard/upArrow,/Keyboard/downArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2886585325032437804}
+        m_TargetAssemblyTypeName: Player_Controller, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a38ae6e7-e25b-46d0-aab1-27c6ddd0be82
+    m_ActionName: Player/Fire[/Keyboard/z]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -334,13 +350,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 990a7872641a47847aef4377a55e2c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: -1298294726, guid: 0fab3df525e91ab4bbb39bf4f4c645ce, type: 3}
+  arrow: {fileID: 6059368537376488282, guid: c6b60dee3011a3b43b2650643fe07a6d, type: 3}
+  arrowPosition: {fileID: 8692329594985969220}
   moveSpeed: 7
   jumpPower: 15
   climbSpeed: 5
   baseGravity: 5
   horizontal: 0
   vertical: 0
+  coyoteTime: 0.1
+  coyoteTimer: 0
   isTouchingLadder: 0
   isAlive: 1
   groundCheckDistance: 0.5

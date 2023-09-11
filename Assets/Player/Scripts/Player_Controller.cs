@@ -16,9 +16,11 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float jumpPower = 10f;
     [SerializeField] float climbSpeed = 5f;
-    [SerializeField] float baseGravity = 5f;
-    [SerializeField] float horizontal;
-    [SerializeField] float vertical;
+    [SerializeField] private float baseGravity = 5f;
+    [SerializeField] private float horizontal;
+    [SerializeField] private float vertical;
+    [SerializeField] float coyoteTime = 0.2f;
+    [SerializeField] private float coyoteTimer;
 
     // Checks
     [SerializeField] bool isTouchingLadder;
@@ -57,8 +59,7 @@ public class Player_Controller : MonoBehaviour
         GroundCheck();
         FlipSprite();
         LadderCheck();
-
-        if (!isAlive) { return; }
+        if (!isAlive) { rb.velocity = new Vector2(0f, rb.velocity.y); return; }
         if (!isTouchingLadder)
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
@@ -77,13 +78,23 @@ public class Player_Controller : MonoBehaviour
                 anim.SetBool("isStopped", false);
             }
         }
+
+        // Coyote Jump
+        if (isGrounded)
+        {
+            coyoteTimer = coyoteTime;
+        }
+        else
+        {
+            coyoteTimer -= Time.deltaTime;
+        }
     }
 
     //Player Controlls
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!isAlive) { return; }
-        if (isGrounded && context.performed)
+        if (context.performed && (isGrounded || coyoteTimer > 0f))
         {
             anim.SetBool("isJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
@@ -106,8 +117,11 @@ public class Player_Controller : MonoBehaviour
     }
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (!isAlive) { return; }
-        Instantiate(arrow, arrowPosition.position, transform.rotation);
+        if (context.performed && isAlive)
+        {
+            Instantiate(arrow, arrowPosition.position, transform.rotation);
+        }
+        else if (!isAlive) { return; }
     }
 
     //Phycics Methods
