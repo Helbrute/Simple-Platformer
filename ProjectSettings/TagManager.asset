@@ -22,7 +22,7 @@ TagManager:
   - Enemy Bounds
   - Hazards
   - Arrows
-  - 
+  - Light
   - 
   - 
   - 
@@ -48,6 +48,9 @@ TagManager:
     locked: 0
   - name: Platforms
     uniqueID: 3416264599
+    locked: 0
+  - name: Light
+    uniqueID: 4154544925
     locked: 0
   - name: Ladders
     uniqueID: 2583303393

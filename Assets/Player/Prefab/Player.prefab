@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 7656790248589134601}
   - component: {fileID: 3602916235081724964}
   - component: {fileID: 2886585325032437804}
+  - component: {fileID: 5443174685936415505}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -108,7 +109,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044798247
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1562948174, guid: 0fab3df525e91ab4bbb39bf4f4c645ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -360,6 +361,38 @@ MonoBehaviour:
   vertical: 0
   coyoteTime: 0.1
   coyoteTimer: 0
+  arrowCooldown: 1
   isTouchingLadder: 0
   isAlive: 1
+  isShooting: 0
   groundCheckDistance: 0.5
+--- !u!114 &5443174685936415505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7339741465456329483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000970fa0cb1d53a1f7e114fa99e365f581
+  m_ShapePath:
+  - {x: -0.19390106, y: -0.3140688, z: 0}
+  - {x: -0.20119476, y: 0.24456692, z: 0}
+  - {x: 0.18970203, y: 0.2515695, z: 0}
+  - {x: 0.1947403, y: -0.3151312, z: 0}
+  m_ShapePathHash: -70959563
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 91366
+  m_LocalBounds:
+    m_Center: {x: -0.003227234, y: -0.03178084, z: 0}
+    m_Extent: {x: 0.19796753, y: 0.28335035, z: 0}

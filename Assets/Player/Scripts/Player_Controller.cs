@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -21,10 +22,14 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float vertical;
     [SerializeField] float coyoteTime = 0.2f;
     [SerializeField] private float coyoteTimer;
+    [SerializeField] float arrowCooldown = 1f;
+    private float lastArrowShotTime;
+
 
     // Checks
     [SerializeField] bool isTouchingLadder;
     [SerializeField] bool isAlive = true;
+    [SerializeField] bool isShooting = false;
     //[SerializeField] bool isShooting = false;
 
     // Ground Check
@@ -32,6 +37,7 @@ public class Player_Controller : MonoBehaviour
     RaycastHit2D[] groundCheckHit = new RaycastHit2D[5];
     ContactFilter2D groundCheckFilter;
     bool groundCheck;
+
     public bool isGrounded
     {
         get { return groundCheck; }
@@ -79,6 +85,17 @@ public class Player_Controller : MonoBehaviour
             }
         }
 
+        // Shooting animation
+        anim.SetBool("isShooting", isShooting);
+        if (isShooting == true)
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+        }
+        else
+        {
+            return;
+        }
+
         // Coyote Jump
         if (isGrounded)
         {
@@ -117,9 +134,13 @@ public class Player_Controller : MonoBehaviour
     }
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (context.performed && isAlive)
+        if (context.performed && isAlive && !isTouchingLadder && isGrounded)
         {
-            Instantiate(arrow, arrowPosition.position, transform.rotation);
+            if (Time.time - lastArrowShotTime >= arrowCooldown)
+            {
+                StartCoroutine(shooting());
+                lastArrowShotTime = Time.time;
+            }
         }
         else if (!isAlive) { return; }
     }
@@ -175,10 +196,14 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
     }
-    //IEnumerator shooting()
-    //{
-    //    anim.SetBool("isShooting", true);
-    //    yield return new WaitForSeconds(0.4f);
-    //    anim.SetBool("isShooting", false);
-    //}
+    IEnumerator shooting()
+    {
+        isShooting = true;
+        //anim.SetBool("isShooting", true);
+        yield return new WaitForSeconds(0.4f);
+        Instantiate(arrow, arrowPosition.position, transform.rotation);
+        isShooting = false;
+        //anim.SetBool("isShooting", false);
+        yield return new WaitForSeconds(1f);
+    }
 }
