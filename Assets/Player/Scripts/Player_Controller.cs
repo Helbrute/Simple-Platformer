@@ -6,14 +6,15 @@ using UnityEngine.UIElements;
 
 public class Player_Controller : MonoBehaviour
 {
-    // Player Components
+    #region Player Components
     private Rigidbody2D rb;
     private Animator anim;
     private CapsuleCollider2D capsCollider;
     public GameObject arrow;
     public Transform arrowPosition;
+    #endregion
 
-    // Player Variables
+    #region Player Variables
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float jumpPower = 10f;
     [SerializeField] float climbSpeed = 5f;
@@ -24,20 +25,19 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float coyoteTimer;
     [SerializeField] float arrowCooldown = 1f;
     private float lastArrowShotTime;
+    #endregion
 
-
-    // Checks
+    #region Other Checks
     [SerializeField] bool isTouchingLadder;
     [SerializeField] bool isAlive = true;
     [SerializeField] bool isShooting = false;
-    //[SerializeField] bool isShooting = false;
+    #endregion
 
-    // Ground Check
+    #region Ground Check
     [SerializeField] float groundCheckDistance = 0.5f;
     RaycastHit2D[] groundCheckHit = new RaycastHit2D[5];
     ContactFilter2D groundCheckFilter;
     bool groundCheck;
-
     public bool isGrounded
     {
         get { return groundCheck; }
@@ -50,6 +50,7 @@ public class Player_Controller : MonoBehaviour
             }
         }
     }
+    #endregion
 
     void Start()
     {
@@ -58,23 +59,35 @@ public class Player_Controller : MonoBehaviour
         anim = GetComponent<Animator>();
         capsCollider = GetComponent<CapsuleCollider2D>();
     }
-
     void Update()
     {
-        anim.SetFloat("yVelocity", rb.velocity.normalized.y);
-        GroundCheck();
         FlipSprite();
-        LadderCheck();
-        if (!isAlive) { rb.velocity = new Vector2(0f, rb.velocity.y); return; }
-        if (!isTouchingLadder)
-        {
-            rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
-            rb.gravityScale = baseGravity;
-        }else
-        {
-            rb.velocity = new Vector2(horizontal * 0.6f, vertical * climbSpeed);
-            rb.gravityScale = 0f;
 
+        // Cheking methods
+        GroundCheck();
+        LadderCheck();
+
+        // Dying behaviour
+        if (!isAlive) { rb.velocity = new Vector2(0f, rb.velocity.y); return; }
+
+        #region Basic movement physics and conditions
+        if (!isTouchingLadder && !isShooting)
+        {
+            rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y); // Standard ladder Vector2
+            rb.gravityScale = baseGravity; // Adjust Gravity while not climbing ladder
+        }
+        else
+        {
+            rb.velocity = new Vector2(horizontal * 0.6f, vertical * climbSpeed); // Climbing ladder Vector2
+            rb.gravityScale = 0f; // Adjust gravity while climbing ladder
+
+            // Check if the player is shooting to change Vector2 
+            if (isShooting)
+            {
+                rb.velocity = Vector2.zero;
+            }
+
+            // Ladder animation
             if (rb.velocity.magnitude < 0.1f)
             {
                 anim.SetBool("isStopped", true);
@@ -84,17 +97,11 @@ public class Player_Controller : MonoBehaviour
                 anim.SetBool("isStopped", false);
             }
         }
+        #endregion
 
-        // Shooting animation
+        // Animations
         anim.SetBool("isShooting", isShooting);
-        if (isShooting == true)
-        {
-            rb.velocity = new Vector2(0f, rb.velocity.y);
-        }
-        else
-        {
-            return;
-        }
+        anim.SetFloat("yVelocity", rb.velocity.normalized.y);
 
         // Coyote Jump
         if (isGrounded)
@@ -107,7 +114,7 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
-    //Player Controlls
+    #region Player Controlls (Input System)
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!isAlive) { return; }
@@ -138,23 +145,15 @@ public class Player_Controller : MonoBehaviour
         {
             if (Time.time - lastArrowShotTime >= arrowCooldown)
             {
-                StartCoroutine(shooting());
+                StartCoroutine(Shooting());
                 lastArrowShotTime = Time.time;
             }
         }
         else if (!isAlive) { return; }
     }
+    #endregion
 
-    //Phycics Methods
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Enemy") || other.CompareTag("Hazards"))
-        {
-            isAlive = false;
-            StartCoroutine(deathRoutine());
-            Debug.Log("Enemy detected!");
-        }
-    }
+    #region Other Methods
     void FlipSprite()
     {
         bool playerHasHorizontalSpeed = Mathf.Abs(horizontal) > Mathf.Epsilon;
@@ -188,22 +187,33 @@ public class Player_Controller : MonoBehaviour
             anim.SetBool("isClimbing", false);
         }
     }
+    #endregion
 
-    // Player Coroutines
-    IEnumerator deathRoutine()
+    // Collision behaviour
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy") || other.CompareTag("Hazards"))
+        {
+            isAlive = false;
+            StartCoroutine(DeathRoutine());
+            Debug.Log("Enemy detected!");
+        }
+    }
+
+    #region Player Coroutines
+    IEnumerator DeathRoutine()
     {
         anim.SetTrigger("isDead");
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
     }
-    IEnumerator shooting()
+    IEnumerator Shooting()
     {
         isShooting = true;
-        //anim.SetBool("isShooting", true);
         yield return new WaitForSeconds(0.4f);
         Instantiate(arrow, arrowPosition.position, transform.rotation);
         isShooting = false;
-        //anim.SetBool("isShooting", false);
         yield return new WaitForSeconds(1f);
     }
+    #endregion
 }
