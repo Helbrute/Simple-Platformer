@@ -361,7 +361,7 @@ MonoBehaviour:
   vertical: 0
   coyoteTime: 0.1
   coyoteTimer: 0
-  arrowCooldown: 1
+  arrowCooldown: 0.5
   isTouchingLadder: 0
   isAlive: 1
   isShooting: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
   - {x: 0.1947403, y: -0.3151312, z: 0}
   m_ShapePathHash: -70959563
   m_Mesh: {fileID: 0}
-  m_InstanceId: 91366
+  m_InstanceId: -22276
   m_LocalBounds:
     m_Center: {x: -0.003227234, y: -0.03178084, z: 0}
     m_Extent: {x: 0.19796753, y: 0.28335035, z: 0}

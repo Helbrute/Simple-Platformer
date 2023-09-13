@@ -9,6 +9,8 @@ TagManager:
   - Hazards
   - Bounds
   - Arrow
+  - Exit
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -23,7 +25,7 @@ TagManager:
   - Hazards
   - Arrows
   - Light
-  - 
+  - Exit
   - 
   - 
   - 
@@ -57,6 +59,9 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 2180343267
+    locked: 0
+  - name: Exit
+    uniqueID: 4026001409
     locked: 0
   - name: Player
     uniqueID: 2044798247

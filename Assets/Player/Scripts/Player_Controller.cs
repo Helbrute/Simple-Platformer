@@ -205,6 +205,7 @@ public class Player_Controller : MonoBehaviour
     {
         anim.SetTrigger("isDead");
         yield return new WaitForSeconds(1.5f);
+        FindObjectOfType<GameSession>().ProcessPlayerDeath();
         Destroy(gameObject);
     }
     IEnumerator Shooting()
