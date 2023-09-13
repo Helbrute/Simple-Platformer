@@ -18,10 +18,10 @@ public class LevelExit : MonoBehaviour
         yield return new WaitForSeconds(waitingSeconds);
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
-        SceneManager.LoadScene(nextSceneIndex);
-        if (nextSceneIndex == SceneManager.sceneCount)
+        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
         {
             nextSceneIndex = 0;
         }
+        SceneManager.LoadScene(nextSceneIndex);
     }
 }
