@@ -12,6 +12,7 @@ public class Player_Controller : MonoBehaviour
     private CapsuleCollider2D capsCollider;
     public GameObject arrow;
     public Transform arrowPosition;
+    
     #endregion
 
     #region Player Variables
